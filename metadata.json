@@ -1,0 +1,6 @@
+{
+  "name": "Google Sheets Guía Interactiva",
+  "description": "Manual interactivo y plataforma de aprendizaje de Google Sheets en español con lectura offline, ejercicios prácticos, tests con insignias, analítica en tiempo real y sincronización de progreso.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

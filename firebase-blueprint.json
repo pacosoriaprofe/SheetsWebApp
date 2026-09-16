@@ -1,0 +1,69 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role (teacher or student) and assigned class",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "teacher"] },
+        "classId": { "type": "string" },
+        "className": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "lastActive": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "ClassGroup": {
+      "title": "ClassGroup",
+      "description": "Educational class group created by the teacher",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "code": { "type": "string" },
+        "description": { "type": "string" },
+        "teacherEmail": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "teacherEmail"]
+    },
+    "StudentProgress": {
+      "title": "StudentProgress",
+      "description": "Student learning progress including chapters, exercises, and quizzes",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "userName": { "type": "string" },
+        "classId": { "type": "string" },
+        "className": { "type": "string" },
+        "completedChaptersCount": { "type": "number" },
+        "completedExercisesCount": { "type": "number" },
+        "averageQuizScore": { "type": "number" },
+        "badgesCount": { "type": "number" },
+        "lastUpdated": { "type": "string" }
+      },
+      "required": ["userId", "userEmail", "classId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles for students and teachers"
+    },
+    "/classes/{classId}": {
+      "schema": "ClassGroup",
+      "description": "Educational classes created by teachers"
+    },
+    "/studentProgress/{userId}": {
+      "schema": "StudentProgress",
+      "description": "Recorded learning progress for each student"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isTeacher() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'pacosoriaprofe@iesdiegotorrente.es' ||
+        (request.auth.token.email != null && request.auth.token.email.matches('.*profe.*@iesdiegotorrente[.]es')) ||
+        request.auth.token.role == 'teacher'
+      );
+    }
+
+    // Classes collection
+    match /classes/{classId} {
+      // Anyone authenticated can view classes to choose theirs
+      allow read: if isAuthenticated();
+      // Teachers can create, update, or delete classes
+      allow write: if isTeacher();
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isTeacher();
+      allow write: if isOwner(userId) || isTeacher();
+    }
+
+    // Student progress collection
+    match /studentProgress/{userId} {
+      allow read: if isOwner(userId) || isTeacher();
+      allow write: if isOwner(userId) || isTeacher();
+    }
+  }
+}
